@@ -1,0 +1,20 @@
+{
+  "name": "vehiclerouting",
+  "version": "1.0.0",
+  "description": "Vehicle Routing Problem solution",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RocketSockz/VehicleRouting.git"
+  },
+  "author": "Sam Beste",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/RocketSockz/VehicleRouting/issues"
+  },
+  "homepage": "https://github.com/RocketSockz/VehicleRouting#readme"
+}
