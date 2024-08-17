@@ -133,6 +133,64 @@ function assignDrivers(loads) {
 }
 
 /**
+ * Creates and assigns drivers based on loads 
+ * This uses the nearest neighbor algorithm to assign drivers.
+ * @param {Array<Load>} loads - An array of Load objects
+ * @returns An array of drivers, each with an array of loads.
+ */
+function assignDriversNearestNeighbor(loads) {
+  // We start with no drivers
+  const drivers = [];
+
+  // I want to iterate, until all the loads are assigned
+  while (loads.some(load => !load.isAssigned)) {
+    const driver = { loads: [] };
+    // We start at the depot / origin
+    let currentPosition = Point.origin;
+    let driverTimeLimit = 12*60; // 12 hours in minutes
+
+    // While the driver has time left.
+    while (driverTimeLimit > 0) {
+      let nearestLoad;
+      // Lets just big number this
+      let nearestDistance = 99999;
+
+      for (const load of loads) {
+        // If we aren't assigned
+        if (!load.isAssigned) {
+          const distanceForPickup = Point.distanceBetweenPoints(currentPosition, load.start);
+          const totalDistanceForLoad = distanceForPickup +
+              Point.distanceBetweenPoints(load.start, load.end) +
+              Point.distanceBetweenPoints(load.end, Point.origin);
+          // We start trying to find our closest load
+          // We don't even try to match the load with a driver, if the driver can't make it home from the load.
+          if (totalDistanceForLoad <= driverTimeLimit && distanceForPickup < nearestDistance) {
+            nearestDistance = distanceForPickup;
+            nearestLoad = load;
+          }
+        }
+      }
+
+      if (nearestLoad) {
+        driver.loads.push(nearestLoad);
+        nearestLoad.isAssigned = true;
+
+        driverTimeLimit -= nearestDistance + Point.distanceBetweenPoints(nearestLoad.start, nearestLoad.end);
+        currentPosition = nearestLoad.end;
+      } else {
+        // No more loads can be assigned to this driver
+        break;
+      }
+    }
+
+    // Add the driver to the list of drivers
+    drivers.push(driver);
+  }
+
+  return drivers;
+}
+
+/**
  * Parses a line from a VRP problem file
  * @param {string} lineString a string - assuming to be points and load information
  * @returns A new load object
@@ -154,7 +212,8 @@ const filePath = args[0];
 // That might not work depending on the version of Node.js the user uses.
 const loads = await parseProblemFile(filePath);
 // Well now we have our list, lets get it printed.
-const drivers = assignDrivers(loads);
+// const drivers = assignDrivers(loads);
+const drivers = assignDriversNearestNeighbor(loads);
 for (const driver of drivers) {
   const loadIds = driver.loads.map(load => load.loadNumber).join(",");
   console.log(`[${loadIds}]`);

@@ -22,7 +22,7 @@ For the building of this project here are all of the resources I used
 1) a lot of the API search was done on the [Node.js reference page](https://nodejs.org/docs/latest-v20.x/api/index.html).
 2) Regular Expressions were written using google, and https://regex101.com/
 3) A [random article about Math](https://www.w3resource.com/javascript-exercises/fundamental/javascript-fundamental-exercise-243.php) - so I was 100% sure Math.hypot was the same as Euclidean distance. I ended up not even using this source, but it was an interesting read. 
-
+4) This [VRP](https://medium.com/@writingforara/solving-vehicle-routing-problems-with-python-heuristics-algorithm-2cc57fe7079c) article that helped me remember that the nearest neighbor algo exists.
 ## Final Comments 
 
 This codebase makes a numerious bunch of assumptions. We assume that the file input will always be present, and that many amounts of errors (such as typing issues, or runtime problems) should not happen under the assumed scenarios outlined in the challenge. 
