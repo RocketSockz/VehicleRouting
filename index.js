@@ -50,8 +50,6 @@ class Point {
 class Route {
   static depotOrigin = Point.origin;
   constructor(loads) {
-    // A route is basically just the stops we need to do (loads), and the points to go.
-    // An array of Load objects
     this.loads = loads;
   }
 
